@@ -3,8 +3,8 @@ import  pygame, sys, math
 class Player():
     
     def __init__(self,  activeColor="red", speed=[0, 0], pos=[0,64]):
-        self.imageLeft = pygame.image.load("Resources/Player/Player Left.png")
-        self.imageRight = pygame.image.load("Resources/Player/Player Right.png")
+        self.imageLeft = pygame.image.load("rsc/Player/Player Left.png")
+        self.imageRight = pygame.image.load("rsc/Player/Player Right.png")
         
         self.state = "right"
         self.image = self.imageRight
@@ -25,6 +25,9 @@ class Player():
                 self.image = self.imageRight
             elif self.state == "left":
                 self.image = self.imageLeft
+
+    def update(self):
+        self.move()
 
     def move(self):
         self.didBounceX = False
