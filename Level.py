@@ -48,8 +48,9 @@ class Level():
         for y,line in enumerate(lines):
             for x,c in enumerate(line):
                 if c in "w" :       #walls
-                    self.walls += [Wall("basicbricks", [x*self.tileSize + self.tileSize/2,
-                                        y*self.tileSize + self.tileSize/2], self.tileSize)]
+                    Wall("basicbricks", [x*self.tileSize + self.tileSize/2,
+                                        y*self.tileSize + self.tileSize/2], self.tileSize)
+                                
                                                
 if __name__ == "__main__":
     level = Level("levels.lvl", 1)
