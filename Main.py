@@ -24,14 +24,29 @@ players = pygame.sprite.Group()
 Wall.containers = all, walls
 Player.containers = all, players
 
-player = Player()
-
 level = Level("levels.lvl", 1)
+player = Player(level.playerspawn, level.tileSize)
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                player.go("right")
+            if event.key == pygame.K_LEFT:
+                player.go("left")
+            
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT:
+                player.go("stop right")
+            if event.key == pygame.K_LEFT:
+                player.go("stop left")
         
     all.update(size)
+    
+    playerHitsWalls = pygame.sprite.spritecollide(player, walls, False)
+    
+    for wall in playerHitsWalls:
+        player.bounceWall(wall)
 
     bgColor = r,g,b = 0,0,0
     screen.fill(bgColor)

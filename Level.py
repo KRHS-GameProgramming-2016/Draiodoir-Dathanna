@@ -1,8 +1,9 @@
 import  pygame, sys, math
 from Wall import *
+from Player import *
 
 class Level():
-    def __init__(self, levelFile, levelNumber=1, tileSize=120):
+    def __init__(self, levelFile, levelNumber=1, tileSize=60):
         self.walls = []
         self.players = []
         self.enemies = []
@@ -33,8 +34,8 @@ class Level():
 
         lines = newlines
 
-        startIndex = lines.index(str(levelNumber))+1
-        endIndex = startIndex + 6
+        startIndex = lines.index(str(levelNumber))+2
+        endIndex = startIndex + 12
 
         newlines = []
         for line in range(startIndex, endIndex):
@@ -50,6 +51,9 @@ class Level():
                 if c in "w" :       #walls
                     Wall("basicbricks", [x*self.tileSize + self.tileSize/2,
                                         y*self.tileSize + self.tileSize/2], self.tileSize)
+                if c in "*" :
+                    self.playerspawn = [x*self.tileSize + self.tileSize/2,
+                                        y*self.tileSize + self.tileSize/2]
                                 
                                                
 if __name__ == "__main__":
