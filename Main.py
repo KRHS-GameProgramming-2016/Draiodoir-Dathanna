@@ -34,12 +34,16 @@ while True:
                 player.go("right")
             if event.key == pygame.K_LEFT:
                 player.go("left")
+            if event.key == pygame.K_UP:
+                player.go("up")
             
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 player.go("stop right")
             if event.key == pygame.K_LEFT:
                 player.go("stop left")
+            if event.key == pygame.K_UP:
+                player.go("stop up")
         
     all.update(size)
     
