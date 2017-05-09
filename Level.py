@@ -34,7 +34,7 @@ class Level():
 
         lines = newlines
 
-        startIndex = lines.index(str(levelNumber))+2
+        startIndex = lines.index(str(levelNumber))+1
         endIndex = startIndex + 12
 
         newlines = []

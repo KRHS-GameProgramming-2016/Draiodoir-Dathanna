@@ -25,6 +25,7 @@ Wall.containers = all, walls
 Player.containers = all, players
 
 level = Level("levels.lvl", 1)
+levelNumber = 1
 player = Player(level.playerspawn, level.tileSize)
 while True:
     for event in pygame.event.get():
@@ -47,6 +48,11 @@ while True:
     
     
     playerHitsWalls = pygame.sprite.spritecollide(player, walls, False)
+    
+    if player.rect.left > width:
+        levelNumber += 1
+        level = Level("levels.lvl", levelNumber)
+        player = Player(level.playerspawn, level.tileSize)
     
     all.update(size)
     
