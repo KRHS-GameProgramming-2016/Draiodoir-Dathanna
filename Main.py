@@ -35,7 +35,7 @@ while True:
             if event.key == pygame.K_LEFT:
                 player.go("left")
             if event.key == pygame.K_UP:
-                player.go("up")
+                player.jump()
             
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
@@ -44,10 +44,11 @@ while True:
                 player.go("stop left")
             if event.key == pygame.K_UP:
                 player.go("stop up")
-        
-    all.update(size)
+    
     
     playerHitsWalls = pygame.sprite.spritecollide(player, walls, False)
+    
+    all.update(size)
     
     for wall in playerHitsWalls:
         player.bounceWall(wall)
