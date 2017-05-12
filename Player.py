@@ -10,10 +10,10 @@ class Player(pygame.sprite.Sprite):
         self.state = "right"
         self.inAir = False
         if size:
-            self.imageRight = pygame.transform.scale(self.imageRight, [size,size])            
-            self.imageLeft = pygame.transform.scale(self.imageLeft, [size,size])            
+            self.imageRight = pygame.transform.scale(self.imageRight, size)            
+            self.imageLeft = pygame.transform.scale(self.imageLeft, size)            
         self.image = self.imageRight
-        self.rect = self.image.get_rect(center = pos)
+        self.rect = self.image.get_rect(topleft = pos)
 
         self.speedx = speed[0]
         self.speedy = speed[1]
@@ -46,9 +46,9 @@ class Player(pygame.sprite.Sprite):
             self.didBounceY = False            
             self.speedx = -self.maxSpeed
             self.didBounceX = False
-            self.didBounceY = False
             self.state = "left"
             self.move()
+            self.didBounceY = False
         if direction == "right":
             self.didBounceY = False
             self.speedx = self.maxSpeed
@@ -56,6 +56,7 @@ class Player(pygame.sprite.Sprite):
             self.didBounceY = False
             self.state = "right"
             self.move()
+            self.didBounceY = False
             
         if direction == "stop left":
             self.speedx = 0
@@ -74,11 +75,12 @@ class Player(pygame.sprite.Sprite):
             self.inAir = True
         
     def getGravity(self):
-        if not self.didBounceY:
+        if self.inAir == True:
             if self.speedy == 0:
                 self.speedy = 1
             else:
                 self.speedy += .42
+                
             
     def bounceWall(self, other):
         diffX = self.rect.centerx - other.rect.centerx
@@ -97,4 +99,6 @@ class Player(pygame.sprite.Sprite):
             self.speedy = 0
             self.didBounceY = True
             self.inAir = False
+            
+        
 

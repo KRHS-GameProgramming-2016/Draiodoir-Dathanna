@@ -1,6 +1,7 @@
 import  pygame, sys, math
 from Player import *
 from Wall import *
+from Groundpoint import *
 from Level import *
 from Background import *
 #from Lives import *
@@ -12,21 +13,23 @@ pygame.init()
 
 clock = pygame.time.Clock()
 
-width = 960
-height = 720
+width = 1024
+height = 640
 size = width, height
 screen = pygame.display.set_mode(size)
 
 all = pygame.sprite.OrderedUpdates()
 walls = pygame.sprite.Group()
+groundpoints = pygame.sprite.Group()
 players = pygame.sprite.Group()
 
 Wall.containers = all, walls
+Groundpoint.containers = all, groundpoints
 Player.containers = all, players
 
 level = Level("levels.lvl", 1)
 levelNumber = 1
-player = Player(level.playerspawn, level.tileSize)
+player = Player(level.playerspawn, [64, 96])
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
@@ -48,18 +51,25 @@ while True:
     
     
     playerHitsWalls = pygame.sprite.spritecollide(player, walls, False)
+    playerOnGround = pygame.sprite.spritecollide(player, groundpoints, False)
     
     if player.rect.left > width:
         levelNumber += 1
         level = Level("levels.lvl", levelNumber)
-        player = Player(level.playerspawn, level.tileSize)
+        player = Player(level.playerspawn, [64, 96])
     
     all.update(size)
     
     for wall in playerHitsWalls:
         player.bounceWall(wall)
+        
+    for groundpoint in playerOnGround:
+        player.inAir = False
+        
+    if len(playerOnGround) == 0:
+        player.inAir = True
 
-    bgColor = r,g,b = 0,0,0
+    bgColor = r,g,b = 165,195,235
     screen.fill(bgColor)
     dirty = all.draw(screen)
     pygame.display.update(dirty)
