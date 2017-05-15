@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
             if self.speedy == 0:
                 self.speedy = 1
             else:
-                self.speedy += .42
+                self.speedy += .80
                 
             
     def bounceWall(self, other):
