@@ -64,7 +64,8 @@ while True:
         player.bounceWall(wall)
         
     for groundpoint in playerOnGround:
-        player.inAir = False
+        if player.rect.bottom == groundpoint.rect.bottom:
+            player.inAir = False
         
     if len(playerOnGround) == 0:
         player.inAir = True
