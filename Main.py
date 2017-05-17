@@ -27,7 +27,7 @@ Wall.containers = all, walls
 Groundpoint.containers = all, groundpoints
 Player.containers = all, players
 
-level = Level("levels.lvl", 1)
+level = Level(1)
 levelNumber = 1
 player = Player(level.playerspawn, [64, 96])
 while True:
@@ -55,7 +55,7 @@ while True:
     
     if player.rect.left > width:
         levelNumber += 1
-        level = Level("levels.lvl", levelNumber)
+        level = Level(levelNumber)
         player = Player(level.playerspawn, [64, 96])
     
     all.update(size)

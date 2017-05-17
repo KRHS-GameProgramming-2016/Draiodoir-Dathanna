@@ -67,9 +67,14 @@ class Player(pygame.sprite.Sprite):
             self.didBounceY = False
             self.getGravity()
             
-    def jump(self):
+    def jump(self, auto=None):
         if not self.inAir:
             self.speedy = -self.maxSpeedy
+            if auto == "auto":
+                if self.speedx < 0:
+                    self.speedx = -4
+                if self.speedx > 0:
+                    self.speedx = 4
             self.didBounceY = False
             self.move()
             self.inAir = True
@@ -87,10 +92,16 @@ class Player(pygame.sprite.Sprite):
         diffY = self.rect.centery - other.rect.centery
         if abs(diffX) > abs(diffY): #left right collide
             if diffX > 0: #left
-                self.rect.left = other.rect.right + 1
+                if diffY < 30:
+                    self.jump("auto")
+                else:
+                    self.rect.left = other.rect.right + 1
             else:
-                self.rect.right = other.rect.left - 1
-                self.speedx = 0
+                if diffY < 30:
+                    self.jump("auto")
+                else:
+                    self.rect.right = other.rect.left - 1
+                #self.speedx = 0
         else:
             if diffY > 0: #below
                 self.rect.top = other.rect.bottom + 1

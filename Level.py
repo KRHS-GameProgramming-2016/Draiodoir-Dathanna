@@ -4,24 +4,25 @@ from Player import *
 from Groundpoint import *
 
 class Level():
-    def __init__(self, levelFile, levelNumber=1, tileSize=32):
+    def __init__(self, levelNumber=1, tileSize=32):
         self.walls = []
         self.players = []
         self.enemies = []
         self.fires = []
         self.plants = []
         self.playerSpawns = []
+        self.groundpoints = []
         self.tileSize = tileSize
-
-        self.loadLevel(levelFile, levelNumber)
-        self.loadGroundpoints(levelFile, levelNumber)
+        
+        self.loadLevel(levelNumber)
+        self.loadGroundpoints(levelNumber)
 
     def unloadLevel(self):
         self.walls = []
-        self.player = []
-        self.enemySpawn = []
+        self.playerSpawns = []
+        self.groundpoints = []
 
-    def loadLevel(self, levelFile, levelNumber):
+    def loadLevel(self, levelNumber):
         f = open("rsc/Levels/levels.lvl")
         lines = f.readlines()
         f.close()
@@ -51,13 +52,13 @@ class Level():
         for y,line in enumerate(lines):
             for x,c in enumerate(line):
                 if c in "w" :       #walls
-                    Wall("purplebricks", [x*self.tileSize,
-                                        y*self.tileSize], self.tileSize)
+                    self.walls += [Wall("purplebricks", [x*self.tileSize,
+                                        y*self.tileSize], self.tileSize)]
                 if c in "*" :
                     self.playerspawn = [x*self.tileSize,
                                         y*self.tileSize]
                                         
-    def loadGroundpoints(self, levelFile, levelNumber):
+    def loadGroundpoints(self, levelNumber):
         f = open("rsc/Levels/groundpoints.lvl")
         lines = f.readlines()
         f.close()
@@ -86,9 +87,9 @@ class Level():
 
         for y,line in enumerate(lines):
             for x,c in enumerate(line):
-                if c in "." :       #walls
-                    Groundpoint([x*self.tileSize,
-                                y*self.tileSize], self.tileSize)
+                if c in "." :       #groundpoints
+                    self.groundpoints += [Groundpoint([x*self.tileSize,
+                                y*self.tileSize], self.tileSize)]
                                 
                                                
 if __name__ == "__main__":
