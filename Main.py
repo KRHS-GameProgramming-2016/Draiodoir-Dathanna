@@ -55,8 +55,23 @@ while True:
     
     if player.rect.left > width:
         levelNumber += 1
+        px = 1
+        py = player.rect.top
+        pPos = [px, py]
+        for s in all.sprites():
+            s.kill()
         level = Level(levelNumber)
-        player = Player(level.playerspawn, [64, 96])
+        player = Player(pPos, [64, 96])
+        
+    if player.rect.right < 0:
+        levelNumber -= 1
+        px = width - 65
+        py = player.rect.top
+        pPos = [px, py]
+        for s in all.sprites():
+            s.kill()
+        level = Level(levelNumber)
+        player = Player(pPos, [64, 96])
     
     all.update(size)
     
