@@ -29,7 +29,7 @@ Player.containers = all, players
 
 level = Level(1)
 levelNumber = 1
-player = Player(level.playerspawn, [64, 96])
+player = Player([1, 416], [64, 96])
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
@@ -61,7 +61,7 @@ while True:
         for s in all.sprites():
             s.kill()
         level = Level(levelNumber)
-        player = Player(pPos, [64, 96])
+        player = Player(pPos, [64, 96], player.speed)
         
     if player.rect.right < 0:
         levelNumber -= 1
@@ -71,7 +71,7 @@ while True:
         for s in all.sprites():
             s.kill()
         level = Level(levelNumber)
-        player = Player(pPos, [64, 96])
+        player = Player(pPos, [64, 96], player.speed)
     
     all.update(size)
     

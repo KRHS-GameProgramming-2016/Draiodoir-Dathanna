@@ -1,7 +1,7 @@
 import  pygame, sys, math
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos=[0,64], size=None, activeColor="red", speed=[0, 0], maxSpeed=5):
+    def __init__(self, pos=[0,64], size=None, speed=[0, 0], activeColor="red", maxSpeed=5):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.imageLeft = pygame.image.load("rsc/Player/Player Left.png")
         self.imageRight = pygame.image.load("rsc/Player/Player Right.png")
