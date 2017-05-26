@@ -1,7 +1,7 @@
 import  pygame, sys, math
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos=[0,64], size=None, speed=[0, 0], activeColor="red", maxSpeed=5):
+    def __init__(self, pos=[0,64], size=None, speed=[0, 0], activeColor="green", maxSpeed=5):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.imageLeft = pygame.image.load("rsc/Player/Player Left.png")
         self.imageRight = pygame.image.load("rsc/Player/Player Right.png")
@@ -24,6 +24,8 @@ class Player(pygame.sprite.Sprite):
         self.maxSpeedy = 8
         self.activeColor = activeColor
         self.screenHeight = 720
+        
+        self.climb = False
       
     def animate(self):
         if self.prevState != self.state:
@@ -67,6 +69,10 @@ class Player(pygame.sprite.Sprite):
             self.didBounceY = False
             self.getGravity()
             
+    def power(self, color):
+        if self.color == "green":
+            self.plantbuild()
+            
     def jump(self, auto=None):
         if not self.inAir:
             self.speedy = -self.maxSpeedy
@@ -85,23 +91,45 @@ class Player(pygame.sprite.Sprite):
                 self.speedy = 1
             else:
                 self.speedy += .42
-                
             
     def bounceWall(self, other):
         diffX = self.rect.centerx - other.rect.centerx
         diffY = self.rect.centery - other.rect.centery
         if abs(diffX) > abs(diffY): #left right collide
             if diffX > 0: #left
-                if diffY < 30:
-                    self.jump("auto")
+                if diffY < 15:
+                    if other.jumpable == True:
+                        if self.speedy == 0:
+                            self.jump("auto")
                 else:
                     self.rect.left = other.rect.right + 1
             else:
                 if diffY < 30:
-                    self.jump("auto")
+                    if other.jumpable == True:
+                        if self.speedy == 0:
+                            self.jump("auto")
                 else:
                     self.rect.right = other.rect.left - 1
                 #self.speedx = 0
+        else:
+            if diffY > 0: #below
+                self.rect.top = other.rect.bottom + 1
+            else:
+                self.rect.bottom = other.rect.top - 1               
+            self.speedy = 0
+            self.didBounceY = True
+            self.inAir = False
+            
+    def plantcollide(self, other):
+        diffX = self.rect.centerx - other.rect.centerx
+        diffY = self.rect.centery - other.rect.centery
+        if abs(diffX) > abs(diffY): #left right collide
+            if diffX > 0: #left
+                self.rect.left = other.rect.right + 1
+                self.speedx = 0
+            else:
+                self.rect.right = other.rect.left - 1
+                self.speedx = 0
         else:
             if diffY > 0: #below
                 self.rect.top = other.rect.bottom + 1

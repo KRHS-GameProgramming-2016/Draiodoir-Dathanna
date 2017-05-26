@@ -7,4 +7,4 @@ class Wall(pygame.sprite.Sprite):
         if size:
             self.image = pygame.transform.scale(self.image, [size,size])
         self.rect = self.image.get_rect(topleft = pos)
-        
+        self.jumpable = False

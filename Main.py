@@ -2,11 +2,12 @@ import  pygame, sys, math
 from Player import *
 from Wall import *
 from Groundpoint import *
+from Climbpoint import *
 from Level import *
 from Background import *
-#from Lives import *
+from Lives import *
 #from Fire import *
-#from Plant import *
+from Plant import *
 #from Enemy import *
 #from Magic import *
 pygame.init()
@@ -20,15 +21,24 @@ screen = pygame.display.set_mode(size)
 
 all = pygame.sprite.OrderedUpdates()
 walls = pygame.sprite.Group()
+plants = pygame.sprite.Group()
+bridgepoints = pygame.sprite.Group()
 groundpoints = pygame.sprite.Group()
 players = pygame.sprite.Group()
+heartdisplays = pygame.sprite.Group()
 
 Wall.containers = all, walls
+Plant.containers = all, plants
 Groundpoint.containers = all, groundpoints
+Bridgepoint.containers = all, bridgepoints
 Player.containers = all, players
+Lives.containers = all, heartdisplays
 
 level = Level(1)
 levelNumber = 1
+
+heartdisplay = Lives([700, 0])
+
 player = Player([1, 416], [64, 96])
 while True:
     for event in pygame.event.get():
@@ -40,6 +50,9 @@ while True:
                 player.go("left")
             if event.key == pygame.K_UP:
                 player.jump()
+            if event.key == pygame.K_f:
+                if player.activeColor == "green":
+                    level.buildBridge(bridgepoints)
             
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
@@ -51,6 +64,7 @@ while True:
     
     
     playerHitsWalls = pygame.sprite.spritecollide(player, walls, False)
+    playerHitsPlants = pygame.sprite.spritecollide(player, plants, False)
     playerOnGround = pygame.sprite.spritecollide(player, groundpoints, False)
     
     if player.rect.left > width:
@@ -78,13 +92,16 @@ while True:
     for wall in playerHitsWalls:
         player.bounceWall(wall)
         
+    for plant in playerHitsPlants:
+        player.plantcollide(plant)    
+        
     for groundpoint in playerOnGround:
         if player.rect.bottom == groundpoint.rect.bottom:
             player.inAir = False
         
     if len(playerOnGround) == 0:
         player.inAir = True
-
+    
     bgColor = r,g,b = 165,195,235
     screen.fill(bgColor)
     dirty = all.draw(screen)
