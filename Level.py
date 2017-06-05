@@ -4,6 +4,8 @@ from Player import *
 from Groundpoint import *
 from Bridgepoint import *
 from Plant import *
+from Fire import *
+from Enemy import *
 
 class Level():
     def __init__(self, levelNumber=1, tileSize=32):
@@ -11,6 +13,7 @@ class Level():
         self.enemies = []
         self.fires = []
         self.plants = []
+        self.enemies = []
         self.groundpoints = []
         self.bridgepoints = []
         self.tileSize = tileSize
@@ -53,11 +56,14 @@ class Level():
                 if c in "w" :       #walls
                     self.walls += [Wall("purplebricks", [x*self.tileSize,
                                         y*self.tileSize], self.tileSize)]
+                if c in "x" :       #enemies
+                    self.enemies += [Enemy([x*self.tileSize,
+                                        y*self.tileSize], [self.tileSize, self.tileSize])]
                 if c in "#" :       #plants
                     self.plants += [Plant([x*self.tileSize,
                                         y*self.tileSize], self.tileSize)]
                 if c in "^" :       #fire
-                    self.plants += [Plant([x*self.tileSize,
+                    self.fires += [Fire([x*self.tileSize,
                                         y*self.tileSize], self.tileSize)]
                 if c in "." :       #groundpoints
                     self.groundpoints += [Groundpoint([x*self.tileSize,

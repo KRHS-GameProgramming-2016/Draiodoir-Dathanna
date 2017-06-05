@@ -1,7 +1,8 @@
 import  pygame, sys, math
+from Player import *
 
 class Lives(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos=[992, 28]):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.oneLifeImage = pygame.image.load("rsc/Lives/hearts1life.png")
         self.twoLivesImage = pygame.image.load("rsc/Lives/hearts2lives.png")
@@ -9,12 +10,13 @@ class Lives(pygame.sprite.Sprite):
         self.fourLivesImage = pygame.image.load("rsc/Lives/hearts4lives.png")
         self.fiveLivesImage = pygame.image.load("rsc/Lives/hearts5lives.png")
         
+        
         self.image = self.fiveLivesImage
-        self.rect = self.image.get_rect(topleft = pos)
+        self.rect = self.image.get_rect(topright = pos)
         self.value = 5
 
-    def change(self, playerLives):
-        newValue = playerLives
+    def change(self, lives):
+        newValue = lives
         if newValue != self.value:
             self.value = newValue
             if self.value == 5:

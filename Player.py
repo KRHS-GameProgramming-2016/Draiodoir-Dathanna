@@ -5,6 +5,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.imageLeft = pygame.image.load("rsc/Player/Player Left.png")
         self.imageRight = pygame.image.load("rsc/Player/Player Right.png")
+        self.blankImage = pygame.image.load("rsc/Player/blank.png")
         
         self.prevState = "right"
         self.state = "right"
@@ -24,6 +25,8 @@ class Player(pygame.sprite.Sprite):
         self.maxSpeedy = 8
         self.activeColor = activeColor
         self.screenHeight = 720
+        self.blinkFrame = 0
+        self.hit = False
         
         self.climb = False
       
@@ -34,6 +37,22 @@ class Player(pygame.sprite.Sprite):
             elif self.state == "left":
                 self.image = self.imageLeft
 
+    def blinkImage(self):
+        if self.blinkFrame == 0:
+            self.lives -= 1
+            self.prevImage = self.image
+            self.blinkFrame = 1
+            
+        self.blinkFrame1 = self.prevImage
+        self.blinkFrame2 = self.blankImage
+        
+        if self.blinkFrame > 0:
+            if self.blinkFrame % 4 == 0:
+                self.image = self.blinkFrame2
+            if self.blinkFrame % 4 != 0:
+                self.image = self.blinkFrame1
+            self.blinkFrame += 1
+
     def update(self, size):
         self.move()
 
@@ -42,6 +61,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = [self.speedx, self.speedy]
         self.rect = self.rect.move(self.speed)
         self.animate()
+        
         
     def go(self, direction):
         if direction == "left":
