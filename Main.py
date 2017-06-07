@@ -72,6 +72,8 @@ while True:
     playerOnGround = pygame.sprite.spritecollide(player, groundpoints, False)
     playerOnFire = pygame.sprite.spritecollide(player, fires, False)
     
+    enemyHitsWalls = pygame.sprite.groupcollide(enemies, walls, False, False)
+    
     if player.rect.left > width:
         levelNumber += 1
         px = 1
@@ -81,6 +83,7 @@ while True:
             s.kill()
         level = Level(levelNumber)
         player = Player(pPos, [64, 96], player.speed)
+        heartdisplay = Lives()
         
     if player.rect.right < 0:
         levelNumber -= 1
@@ -91,6 +94,7 @@ while True:
             s.kill()
         level = Level(levelNumber)
         player = Player(pPos, [64, 96], player.speed)
+        heartdisplay = Lives()
         
     #if player.rect.top > height:
         #levelNumber += 100
@@ -118,6 +122,7 @@ while True:
     
     for wall in playerHitsWalls:
         player.bounceWall(wall)
+        
         
     for plant in playerHitsPlants:
         player.plantcollide(plant)    
