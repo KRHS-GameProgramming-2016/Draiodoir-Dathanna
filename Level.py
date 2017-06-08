@@ -6,6 +6,7 @@ from Bridgepoint import *
 from Plant import *
 from Fire import *
 from Enemy import *
+from Ladder import *
 
 class Level():
     def __init__(self, levelNumber=1, tileSize=32):
@@ -16,6 +17,7 @@ class Level():
         self.enemies = []
         self.groundpoints = []
         self.bridgepoints = []
+        self.ladders = []
         self.tileSize = tileSize
         
         self.loadLevel(levelNumber)
@@ -59,7 +61,7 @@ class Level():
                 if c in "x" :       #enemies
                     self.enemies += [Enemy([x*self.tileSize,
                                         y*self.tileSize], [self.tileSize, self.tileSize])]
-                if c in "#" :       #plants
+                if c in "%" :       #plants
                     self.plants += [Plant([x*self.tileSize,
                                         y*self.tileSize], self.tileSize)]
                 if c in "^" :       #fire
@@ -68,6 +70,9 @@ class Level():
                 if c in "." :       #groundpoints
                     self.groundpoints += [Groundpoint([x*self.tileSize,
                                 y*self.tileSize], self.tileSize)]
+                if c in "#" :       #ladders
+                    self.ladders += [Ladder([x*self.tileSize,
+                                y*self.tileSize])]
                 if c in "~" :       #bridgepoints
                     self.bridgepoints += [Bridgepoint([x*self.tileSize,
                                 y*self.tileSize], self.tileSize)]

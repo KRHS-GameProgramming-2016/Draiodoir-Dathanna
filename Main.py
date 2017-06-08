@@ -27,6 +27,7 @@ bridgepoints = pygame.sprite.Group()
 groundpoints = pygame.sprite.Group()
 players = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
+ladders = pygame.sprite.Group()
 heartdisplays = pygame.sprite.Group()
 
 Wall.containers = all, walls
@@ -37,6 +38,7 @@ Bridgepoint.containers = all, bridgepoints
 Player.containers = all, players
 Enemy.containers = all, enemies
 Lives.containers = all, heartdisplays
+Ladder.containers = all, ladders
 
 level = Level(2)
 levelNumber = 2
@@ -53,7 +55,7 @@ while True:
             if event.key == pygame.K_LEFT:
                 player.go("left")
             if event.key == pygame.K_UP:
-                player.jump()
+                player.up()
             if event.key == pygame.K_f:
                 if player.activeColor == "green":
                     level.buildBridge(bridgepoints)
@@ -70,6 +72,7 @@ while True:
     playerHitsWalls = pygame.sprite.spritecollide(player, walls, False)
     playerHitsPlants = pygame.sprite.spritecollide(player, plants, False)
     playerOnGround = pygame.sprite.spritecollide(player, groundpoints, False)
+    playerOnLadder = pygame.sprite.spritecollide(player, ladders, False)
     playerOnFire = pygame.sprite.spritecollide(player, fires, False)
     
     enemyHitsWalls = pygame.sprite.groupcollide(enemies, walls, False, False)
@@ -96,25 +99,25 @@ while True:
         player = Player(pPos, [64, 96], player.speed)
         heartdisplay = Lives()
         
-    #if player.rect.top > height:
-        #levelNumber += 100
-        #px = player.rect.left
-        #py = 0
-        #pPos = [px, py]
-        #for s in all.sprites():
-            #s.kill()
-        #level = Level(levelNumber)
-        #player = Player(pPos, [64, 96], player.speed)
+    if player.rect.top > height:
+        levelNumber += 100
+        px = player.rect.left
+        py = 0
+        pPos = [px, py]
+        for s in all.sprites():
+            s.kill()
+        level = Level(levelNumber)
+        player = Player(pPos, [64, 96], player.speed)
         
-    #if player.rect.bottom < 0:
-        #levelNumber -= 100
-        #px = player.rect.left
-        #py = 544
-        #pPos = [px, py]
-        #for s in all.sprites():
-            #s.kill()
-        #level = Level(levelNumber)
-        #player = Player(pPos, [64, 96], player.speed)
+    if player.rect.bottom < 0:
+        levelNumber -= 100
+        px = player.rect.left
+        py = 544
+        pPos = [px, py]
+        for s in all.sprites():
+            s.kill()
+        level = Level(levelNumber)
+        player = Player(pPos, [64, 96], player.speed)
     
     all.update(size)
     
@@ -130,6 +133,9 @@ while True:
     for groundpoint in playerOnGround:
         if player.rect.bottom == groundpoint.rect.bottom:
             player.inAir = False
+            
+    for ladder in playerOnLadder:
+        player.climb = True
         
     if playerOnFire:
         player.hit = True

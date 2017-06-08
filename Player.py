@@ -57,7 +57,8 @@ class Player(pygame.sprite.Sprite):
         self.move()
 
     def move(self):
-        self.getGravity()
+        if not self.climb:
+            self.getGravity()
         self.speed = [self.speedx, self.speedy]
         self.rect = self.rect.move(self.speed)
         self.animate()
@@ -71,12 +72,30 @@ class Player(pygame.sprite.Sprite):
             self.state = "left"
             self.move()
             self.didBounceY = False
+            self.climb = False
         if direction == "right":
             self.didBounceY = False
             self.speedx = self.maxSpeed
             self.didBounceX = False
             self.didBounceY = False
             self.state = "right"
+            self.move()
+            self.didBounceY = False
+            self.climb = False
+        if direction == "up":
+            self.didBounceY = False
+            self.speedy = -self.maxSpeed
+            self.didBounceX = False
+            self.didBounceY = False
+            self.state = "up"
+            self.move()
+            self.didBounceY = False
+        if direction == "down":
+            self.didBounceY = False
+            self.speedy = self.maxSpeed
+            self.didBounceX = False
+            self.didBounceY = False
+            self.state = "down"
             self.move()
             self.didBounceY = False
             
@@ -88,6 +107,18 @@ class Player(pygame.sprite.Sprite):
             self.speedx = 0
             self.didBounceY = False
             self.getGravity()
+        if direction == "stop up":
+            self.speedy = 0
+            self.didBounceY = False
+        if direction == "stop down":
+            self.speedy = 0
+            self.didBounceY = False
+            
+    def up(self):
+        if self.climb == True:
+            self.go("up")
+        else:
+            self.jump()
             
     def power(self, color):
         if self.color == "green":
